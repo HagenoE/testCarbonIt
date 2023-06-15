@@ -1,14 +1,15 @@
+const fs = require('fs');
 const analyseFile = require('../service/analyseFile.service');
 
 const homeController = {
   homePage(_, res) {
     res.render('accueil');
   },
-  resultPage(req, res) {
+  async resultPage(req, res, next) {
     const file = req.files.Instruction;
     const buffer = file.data.toString('utf8');
     const arrayOfAllDatas = buffer.split('\n');
-
+    let textResult = `Instruction du debut :\n${buffer}\n\n`;
     const allData = arrayOfAllDatas.reduce((acc, val) => {
       if ((val.split('')[0] !== '#') && (val !== '')) {
         acc.push(val);
@@ -16,33 +17,38 @@ const homeController = {
       return acc;
     }, []);
 
-    const mapCoordonnate = analyseFile.getMapSize(allData[0]);
+    const map = analyseFile.getMapSize(allData[0]);
 
-    const map = [];
+    let adventureSequence;
 
-    for (let xIndex = 0; xIndex < mapCoordonnate[0]; xIndex += 1) {
-      const newArray = [];
-      for (let yIndex = 0; yIndex < mapCoordonnate[1]; yIndex += 1) {
-        const yArray = [];
-        yArray.push(yIndex);
-        newArray.push(yArray);
+    allData.forEach((data) => {
+      const currentArray = data.split(' - ');
+
+      if (currentArray[0] === 'M') {
+        return analyseFile.getMountainLocalisation(currentArray, map);
       }
-      map.push(newArray);
-    }
+      if (currentArray[0] === 'T') {
+        return analyseFile.treasureLocalisation(currentArray, map);
+      }
 
-    // map
-    /*
-    [
-  [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ],
-  [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ],
-  [ [ 0 ], [ 1 ], [ 2 ], [ 3 ] ]
-]
-    */
+      if (currentArray[0] === 'A') {
+        adventureSequence = currentArray;
+        return adventureSequence;
+      }
+      return true;
+    });
 
-    // allData
-    // [ 'C - 3 - 4', 'Nlkm .', 'cyrtcfviu', 'rcdfvyugbol' ]
+    const finalAdventure = analyseFile.adventureSimulated(adventureSequence, map);
 
-    res.send('ok');
+    const resultatAventure = finalAdventure.join(' - ');
+
+    textResult += `Resultat apres exploration :\n${resultatAventure}`;
+    const fileName = `resultatAventure_${Date.now()}`;
+
+    fs.writeFile(`${fileName}.txt`, textResult, (err) => {
+      if (err) { next(err); }
+    });
+    res.send(finalAdventure);
   },
 };
 
