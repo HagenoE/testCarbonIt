@@ -24,10 +24,11 @@ const analyseFile = {
     }
     const xData = Number(dataArray[1]);
     const yData = Number(dataArray[2]);
+
     if (xData.isNaN && yData.isNaN) {
       const errorCoordonate = {
         status: 400,
-        message: 'First must have only 2 number',
+        message: 'File must have only 2 number',
       };
       throw new AppError(errorCoordonate);
     }
@@ -41,7 +42,7 @@ const analyseFile = {
     }
     const map = [];
 
-    for (let xIndex = 0; xIndex <= xData; xIndex += 1) {
+    for (let xIndex = 0; xIndex < xData; xIndex += 1) {
       const newArray = [];
       for (let yIndex = 0; yIndex < yData; yIndex += 1) {
         const yArray = [];
@@ -63,7 +64,7 @@ const analyseFile = {
     const xData = sentence[1];
     const yData = sentence[2];
 
-    map[xData][yData] = ['M'];
+    map[xData][yData] = 'M';
     return map;
   },
   /**
