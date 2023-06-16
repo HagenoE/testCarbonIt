@@ -1,5 +1,6 @@
 const express = require('express');
 const upload = require('express-fileupload');
+const bunyan = require('./logger/logger.helper');
 
 const app = express();
 const router = require('./router/router');

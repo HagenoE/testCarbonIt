@@ -11,10 +11,7 @@ const homeController = {
     }
 
     const file = req.files.Instruction.data.toString('utf8');
-    // const buffer = file.data.toString('utf8');
-    // const arrayOfAllDatas = buffer.split('\n');
     const arrayOfAllDatas = file.split('\n');
-    // let textResult = `Instruction du debut :\n${buffer}\n\n`;
     let textResult = `Instruction du debut :\n${file}\n\n`;
     const allData = arrayOfAllDatas.reduce((acc, val) => {
       if ((val.split('')[0] !== '#') && (val !== '')) {

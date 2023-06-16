@@ -20,6 +20,7 @@ const analyseFile = {
         status: 400,
         message: 'First line of file must content C',
       };
+      console.log(ligneError);
       throw new AppError(ligneError);
     }
     const xData = Number(dataArray[1]);
@@ -127,8 +128,6 @@ const analyseFile = {
     endOfAdventure.push(yFinalPosition);
     endOfAdventure.push(orientation);
     endOfAdventure.push(numberOfTreasure);
-
-    map[xFinalPosition][yFinalPosition] = 'A';
 
     return endOfAdventure;
   },
