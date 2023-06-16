@@ -56,7 +56,7 @@ const homeController = {
       if (err) { next(err); }
     });
     console.log(map);
-    return res.send(finalAdventure);
+    return res.render('result', { results: resultatAventure });
   },
 };
 

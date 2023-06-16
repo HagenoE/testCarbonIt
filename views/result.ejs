@@ -1,6 +1,13 @@
 <%- include('partials/header.ejs') %>
-<form method="post"  action="/" enctype="multipart/form-data" >
-        <input type="file" id="Instruction" name="Instruction">
-        <input type="submit" value="Upload">
-    </form>
+
+<% if (results) { %>
+    <div>Position de l'aventurier :</div>
+    <%= results%>
+
+<% } %>
+
+
+
+
+<div><a href="/">Accueil</a></div>
 <%- include('partials/footer.ejs') %>

@@ -64,7 +64,7 @@ const analyseFile = {
     const xData = sentence[1];
     const yData = sentence[2];
 
-    map[xData][yData] = 'M';
+    map[xData][yData] = ['M'];
     return map;
   },
   /**
@@ -127,6 +127,8 @@ const analyseFile = {
     endOfAdventure.push(yFinalPosition);
     endOfAdventure.push(orientation);
     endOfAdventure.push(numberOfTreasure);
+
+    map[xFinalPosition][yFinalPosition] = 'A';
 
     return endOfAdventure;
   },
