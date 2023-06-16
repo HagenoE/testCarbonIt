@@ -6,10 +6,13 @@ const homeController = {
     res.render('accueil');
   },
   async resultPage(req, res, next) {
-    const file = req.files.Instruction;
-    const buffer = file.data.toString('utf8');
-    const arrayOfAllDatas = buffer.split('\n');
-    let textResult = `Instruction du debut :\n${buffer}\n\n`;
+    if (!req.files) {
+      return res.redirect('/');
+    }
+
+    const file = req.files.Instruction.data.toString('utf8');
+    const arrayOfAllDatas = file.split('\n');
+    let textResult = `Instruction du debut :\n${file}\n\n`;
     const allData = arrayOfAllDatas.reduce((acc, val) => {
       if ((val.split('')[0] !== '#') && (val !== '')) {
         acc.push(val);
@@ -45,10 +48,11 @@ const homeController = {
     textResult += `Resultat apres exploration :\n${resultatAventure}`;
     const fileName = `resultatAventure_${Date.now()}`;
 
-    fs.writeFile(`${fileName}.txt`, textResult, (err) => {
+    fs.writeFile(`resultat/${fileName}.txt`, textResult, (err) => {
       if (err) { next(err); }
     });
-    res.send(finalAdventure);
+
+    return res.render('result', { results: resultatAventure });
   },
 };
 
