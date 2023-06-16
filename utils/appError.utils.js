@@ -13,4 +13,3 @@ module.exports = AppError;
 // TODO
 // journalisation
 // ReadMe
-// Ejs affichage de resultat

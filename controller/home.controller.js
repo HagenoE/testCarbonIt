@@ -6,7 +6,6 @@ const homeController = {
     res.render('accueil');
   },
   async resultPage(req, res, next) {
-    console.log(req.files);
     if (!req.files) {
       return res.redirect('/');
     }
@@ -55,7 +54,7 @@ const homeController = {
     fs.writeFile(`resultat/${fileName}.txt`, textResult, (err) => {
       if (err) { next(err); }
     });
-    console.log(map);
+
     return res.render('result', { results: resultatAventure });
   },
 };
